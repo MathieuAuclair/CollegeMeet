@@ -1,0 +1,173 @@
+*{
+font-family:verdana, sans-serif;
+}
+
+html{
+background:gray;
+background-position:left center;
+background-size:cover;
+background-repeat:no-repeat;
+background-position:center;
+background-attachment: fixed;
+}
+
+body{
+width:90%;
+height:100%;
+background:rgba(0,0,0,0.4);
+display:block;
+margin:auto;
+transition:background 2s;
+}
+
+body:hover{
+background:rgba(0,0,0,0.5);
+}
+
+header{
+height:100px;
+width:90%;
+background:rgba(0,0,0,0.8);
+position:absolute;
+top:0px;
+color:white;
+}
+
+header ul{
+text-align:right;
+user-select: none;
+padding:0px;
+margin:0px;
+height:100%;
+display:inline-block;
+width:65%;
+vertical-align:top;
+}
+
+header li{
+width:30%;
+color:white;
+display:inline-block;
+text-align:center;
+margin-top:25px;
+background:black;
+border-radius:5px;
+height:50px;
+line-height:350%;
+border:1px solid white;
+margin-right:7px;
+transition:background 1s, color 1s;
+vertical-align:top;
+}
+
+header li:hover{
+background:#121212;
+color:blue;
+}
+
+header div{
+text-align:left;
+vertical-align:top;
+display:inline-block;
+height:100%;
+width:30%;
+overflow:hidden;
+}
+
+header div img{
+height:100%;
+vertical-align:top;
+}
+
+header div h1{
+margin:0px;
+font-size:25px;
+line-height:300%;
+display:inline-block;
+vertical-align:top;
+}
+
+content{
+text-align:center;
+font-size:1.1em;
+}
+
+content p{
+width:80%;
+text-align:center;
+display:block;
+margin:auto;
+}
+
+content ul{
+padding:0px;
+padding-bottom:50px;
+color:white;
+}
+
+content h2{
+margin:0px;
+padding-top:150px;
+}
+
+content h3{
+padding-bottom:30px;
+color:white;
+font-weight:300;
+}
+
+content ul li{
+list-style-type:none;
+font-weight:100;
+}
+
+content img{
+display:block;
+margin:auto;
+width:70%;
+}
+
+footer{
+height:100px;
+text-align:center;
+background:rgba(0,0,0,0.95);
+color:white;
+width:100%;
+}
+
+footer p{
+padding-top:35px;
+}
+
+@media screen and (min-width: 500px){
+	content{
+	font-size:2em;
+	}
+	content img{
+	height:200px;
+	width:auto;
+	}
+	content h3{
+	font-weight:600;
+	padding-bottom:0px;
+	}
+}
+
+.textSummit{
+height:0px;
+width:100%;
+padding-top:0px;
+background:rgba(0,0,0,0.2);
+overflow:hidden;
+text-align:center;
+}
+
+.textSummit p{
+display:inline-block;
+width:100px;
+}
+
+.textSummit button{
+display:block;
+margin:auto;
+}
