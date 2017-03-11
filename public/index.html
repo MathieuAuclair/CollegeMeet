@@ -15,7 +15,7 @@
 			</div>
 
 			<ul>
-				<li onclick="displaySignin(),false;">sign in</li>
+				<li onclick="displaySignin(),false;">sign up</li>
 				<li onclick="displayLogin(),false;">log in</li>
 			</ul>	
 		</header>
@@ -25,18 +25,18 @@
 		<div id="login" class="textSummit">
 			<h4>Log In</h4>
 			<div>
-				<p>Email: </p>
+				<p>Email:  </p>
 				<input type="text"></input>
 			</div>
 			<div>
-				<p>Password: </p>
-				<input type="text"></input>
+				<p>Password:  </p>
+				<input type="password"></input>
 			</div>
-			<button>Sign In</button>
+			<button>Log in</button>
 		</div>
 
 		<div id="signup" class="textSummit">
-			<h4>Sign In</h4>
+			<h4>Sign up</h4>
 			<div>
 				<p>Name: </p>
 				<input type="text"></input>
@@ -47,9 +47,9 @@
 			</div>
 			<div>
 				<p>Password: </p>
-				<input type="text"></input>
+				<input type="password"></input>
 			</div>
-			<button>Log In</button>	
+			<button>Sign up</button>	
 		</div>
 		<content>
 			<h2 id="titleh2">Welcome to MeetMe</h2>
@@ -66,6 +66,7 @@
 		<footer>
 			<p>Mathieu Auclair | MeetMe &reg </p>
 		</footer>
+		<script src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="script/app.js"></script>
 	</body>
 </html>

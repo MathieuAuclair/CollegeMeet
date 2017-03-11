@@ -4,11 +4,6 @@ font-family:verdana, sans-serif;
 
 html{
 background:gray;
-background-position:left center;
-background-size:cover;
-background-repeat:no-repeat;
-background-position:center;
-background-attachment: fixed;
 }
 
 body{
@@ -139,6 +134,47 @@ footer p{
 padding-top:35px;
 }
 
+.textSummit{
+height:0px;
+width:100%;
+padding-top:0px;
+background:rgba(0,0,0,0.2);
+overflow:hidden;
+text-align:center;
+color:white;
+}
+
+.textSummit p{
+display:block;
+margin:auto;
+text-align:center;
+}
+
+.textSummit button{
+display:block;
+margin:auto;
+background:rgba(255,255,255,0.8);
+border-radius:15px;
+height:40px;
+width:60%;
+margin-top:25px;
+font-weight:600;
+border:none;
+transition:color 1.5s, background 0.5s;
+}
+
+.textSummit button:hover{
+background:#212121;
+color:white;
+}
+
+.textSummit input{
+opacity:0.9;
+width:40%;
+font-size:1.2em;
+margin-bottom:10px;
+}
+
 @media screen and (min-width: 500px){
 	content{
 	font-size:2em;
@@ -151,23 +187,16 @@ padding-top:35px;
 	font-weight:600;
 	padding-bottom:0px;
 	}
-}
-
-.textSummit{
-height:0px;
-width:100%;
-padding-top:0px;
-background:rgba(0,0,0,0.2);
-overflow:hidden;
-text-align:center;
-}
-
-.textSummit p{
-display:inline-block;
-width:100px;
-}
-
-.textSummit button{
-display:block;
-margin:auto;
+	.textSummit button{
+	width:150px;
+	}
+	.textSummit p{
+	display:inline-block;
+	width:15%;
+	text-align:right;
+	}
+	.textSummit input{
+	margin-right:15%;
+	width:20%;
+	}
 }
