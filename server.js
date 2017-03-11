@@ -11,13 +11,21 @@ response.sendFile(__dirname + '/public/index.html');
 });
 
 app.use(express.static("public"));
-//app.use( express.static(__dirname+'../client') );
-
-//normal javascript function goes here
 
 
+//fake database here
 
-//
+var users = [];
+
+//object to store users
+
+function user(n, e, p){
+this.name = n,
+this.email = e,
+this.password = p,
+this.bio,
+this.friend
+}
 
 io.sockets.on('connection', function(socket){
 	//connection
@@ -27,4 +35,30 @@ io.sockets.on('connection', function(socket){
 	socket.on('disconnect', function(data){
 	console.log("connection released");
 	});
+
+	socket.on('createAccount', function(newName, newEmail, newPassword){
+	var newUser =  new user(newName, newEmail, newPassword);
+	if(newUser.name.length > 2)
+		users.push(newUser);
+	else
+		io.sockets.emit('error', true);
+	console.log(newUser);
+	});
+
+	socket.on('logInAccount', function(email, password){
+	var currentUser;
+	console.log("try");
+	for(i = 0; i < users.length; i++){
+		if(users[i].email == email)
+			currentUser = users[i];
+		}
+	if(currentUser.password == password)
+		console.log("connected user on account!");
+	else
+		console.log("error connection for a user");
+	});
 });
+
+
+
+

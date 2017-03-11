@@ -1,9 +1,9 @@
 
 //connection to socket
 
-var socket = io.connect("http://localhost:8080");
+var socket = io.connect();
 
-//client side javascript
+//style slide signUp logIn
 
 var signIn = document.getElementById("signup");
 var login = document.getElementById("login");
@@ -24,6 +24,26 @@ login.style.height = "0px";
 signIn.style.height = "350px";
 }
 
-//connection with socket.io
+//create a new account to the server
+var userName = document.getElementById("newName"),
+    email = document.getElementById("newEmail"),
+    password = document.getElementById("newPassword");
+
+//check if entry is valid
+function createAccount(){
+socket.emit("createAccount", userName.value, email.value, password.value);
+socket.on ('error', function(valid){
+	alert("Please enter valid entry!");
+	});
+}
+
+//log in an account on the server
+var logEmail = document.getElementById("logEmail"),
+    logPassword = document.getElementById("logPassword");
+
+//check if entry are right
+function accesAccount(){
+socket.emit("logInAccount", logEmail.value, logPassword.value);
+}
 
 
