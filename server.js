@@ -3,15 +3,13 @@ var app = express();
 var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
 
+
+//node js server setup
+
 server.listen(process.env.PORT || 8080);
 console.log("Server is running on localhost:8080\n*\n*\n*");
 
-app.get('/',function(request, response){
-response.sendFile(__dirname + '/public/index.html');	
-});
-
 app.use(express.static("public"));
-
 
 //fake database here
 
@@ -30,6 +28,7 @@ this.friend
 io.sockets.on('connection', function(socket){
 	//connection
 	console.log("new connection");
+	console.log(socket.id);
 
 	//disconnect
 	socket.on('disconnect', function(data){
@@ -47,17 +46,32 @@ io.sockets.on('connection', function(socket){
 
 	socket.on('logInAccount', function(email, password){
 	var currentUser;
-	console.log("try");
 	for(i = 0; i < users.length; i++){
 		if(users[i].email == email)
 			currentUser = users[i];
 		}
-	if(currentUser.password == password)
+	if(currentUser.password == password){
 		console.log("connected user on account!");
-	else
-		console.log("error connection for a user");
+		io.emit('loadHome', true, currentUser);
+		}
 	});
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
