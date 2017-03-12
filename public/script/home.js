@@ -7,12 +7,19 @@ var socket = io.connect();
 
 var userAccount = JSON.parse(getParameterByName("profile"));
 
+function screenAjust(){
+	if(screen.width > 500)
+	guessSelect.style.height = "300px";
+	else
+	guessSelect.style.height = "240px";
+}
+
 //function to show description over a picture
 
 var guessSelect = document.getElementById("aboutSelection");
 
 function displayInfo(index){
-	guessSelect.style.height = "350px";
+	screenAjust();
 	socket.emit("viewAccount", userAccount.email, userAccount.password, index);
 	socket.on("loadView", function(valid, guessMatch){	
 		var view = JSON.parse(guessMatch);
