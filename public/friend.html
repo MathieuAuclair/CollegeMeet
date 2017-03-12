@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MeetMe | CJ</title>
+		<meta charset="utf-8"></meta>
+		<!-- Check Device Width so Media Queries will work -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/Style.css">
+	</head>
+	<body>
+		<header>
+			<div>
+				<img src="img/logo.png"></img>
+				<h1>MeetMe</h1>
+			</div>
+
+			<ul>
+				<li onclick="accessAccount('homePage.html?profile=',false);">hub</li>
+				<li onclick="accessAccount('profile.html?profile=',false);">profile</li>
+			</ul>	
+		</header>
+		<div style="height:100px;"></div>
+		<content id="content">
+			<div id="contact">
+				<ul>
+				<li>Sample</li>
+				</ul>
+			</div>	
+			<div class="userInterface">
+				<div id="convo">
+					<p class="recive">sample</p>
+					<p class="send">sample</p>
+				</div>
+				<div id="writeArea">
+					<textarea style="height:60px;"></textarea>
+					<button>Send Message</button>
+				</div>
+			</div>
+		</content>
+		<footer>
+			<p style="margin-top:0px;">Mathieu Auclair | MeetMe &reg </p>
+		</footer>
+
+		<script src="/script/url.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/script/friend.js"></script>
+	</body>
+</html>
+
