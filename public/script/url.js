@@ -11,4 +11,18 @@ function getParameterByName(name, url) {
 	return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+//check if entry are right
+function accessAccount(pathTo, fromIndex){
+if(fromIndex)
+socket.emit("logInAccount", logEmail.value, logPassword.value);
+else{
+account = JSON.parse(getParameterByName("profile"));
+socket.emit("logInAccount", account.email, account.password)
+}
+socket.on ('loadHome', function(valid, currentUser){
+	if(valid)
+	window.location.href = pathTo + JSON.stringify(currentUser); 
+	});
+}
+
 

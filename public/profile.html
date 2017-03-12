@@ -15,23 +15,19 @@
 			</div>
 
 			<ul>
-				<li onclick="accessAccount('profile.html?profile=',false);">profile</li>
+				<li onclick="accessAccount('homePage.html?profile=',false);">hub</li>
 				<li onclick="accessAccount('friend.html?profile=',false);">friend</li>
 			</ul>	
 		</header>
 		<content id="content">
-			<h2>Take a guess!</h2>
-			<p id="state">chose one person for the day!</p>	
-			<div id="selection">
-				<img onclick="displayInfo(1),false;"></img>
-				<img onclick="displayInfo(2),false;"></img>
-				<img onclick="displayInfo(3),false;"></img>
-			</div>
-			<div id="aboutSelection">
-				<h3>GuessName</h3>
-				<p>bio, a small intro about this person</p>
-				<h4>0 tag matched</h4>
-			</div>
+			<h2 id="titleName">Name</h2>
+			<img src="img/logo.png"></img>
+			<p>link to your profile picture</p>
+			<input type="text"></input>
+			<button>change picture</button>
+			<p>bio</p>
+			<textarea></textarea>
+			<button>change bio</button>
 		</content>
 		<footer>
 			<p>Mathieu Auclair | MeetMe &reg </p>
@@ -39,7 +35,7 @@
 
 		<script src="/script/url.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
-		<script src="/script/home.js"></script>
+		<script src="/script/profile.js"></script>
 	</body>
 </html>
 

@@ -32,7 +32,7 @@
 				<p>Password:  </p>
 				<input id="logPassword" type="password"></input>
 			</div>
-			<button onclick="accessAccount('homePage.html?profile=', true);">Log in</button>
+			<button onclick="accesAccount();">Log in</button>
 		</div>
 
 		<div id="signup" class="textSummit">
@@ -66,8 +66,8 @@
 		<footer>
 			<p>Mathieu Auclair | MeetMe &reg </p>
 		</footer>
-		<script src="/socket.io/socket.io.js"></script>
 		<script src="script/url.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="script/app.js"></script>
 	</body>
 </html>

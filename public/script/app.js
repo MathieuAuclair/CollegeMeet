@@ -41,12 +41,3 @@ socket.on ('error', function(valid){
 var logEmail = document.getElementById("logEmail"),
     logPassword = document.getElementById("logPassword");
 
-//check if entry are right
-function accesAccount(){
-socket.emit("logInAccount", logEmail.value, logPassword.value);
-socket.on ('loadHome', function(valid, currentUser){
-	if(valid)
-	window.location.href = "homePage.html?profile=" + JSON.stringify(currentUser); });
-}
-
-
