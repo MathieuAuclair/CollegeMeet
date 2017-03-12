@@ -37,63 +37,89 @@ this.bio = b,
 this.tag = t
 }
 
+//count of online person
+
+var online = 0;
+
 io.sockets.on('connection', function(socket){
 	//connection
-	console.log("new connection");
-	console.log(socket.id);
-
+	online++;	
+	console.log(online + " connection");
 	//disconnect
 	socket.on('disconnect', function(data){
-	console.log("connection released");
+	online--;
+	console.log(online + " connection");
 	});
 
 	socket.on('createAccount', function(newName, newEmail, newPassword){
 	var newUser =  new user(newName, newEmail, newPassword);
-	if(newUser.name.length > 2)
+	if(newUser.name.length > 5 && checkRegex(newUser.name) && newUser.password.length > 5 && checkRegex(newUser.password) && distinct(newUser.email)){
 		users.push(newUser);
+		io.sockets.emit('error', false);
+	}
 	else
 		io.sockets.emit('error', true);
-	console.log(newUser);
 	});
 
 	socket.on('logInAccount', function(email, password){
-	var currentUser;
-	for(i = 0; i < users.length; i++){
-		if(users[i].email == email)
-			currentUser = users[i];
-		}
-	if(currentUser != null)
-	if(currentUser.password == password){
-		console.log("connected user on account!");
-		io.emit('loadHome', true, currentUser);
-		}
+		if(idChecker(email,password))
+		io.emit('loadHome', true, getUser(email,password));
 	});
 
 	socket.on('viewAccount', function(email, password, index){
-	var currentUser;
-	for(i = 0; i < users.length; i++){
-		if(users[i].email == email)
-			currentUser = users[i];
-		}
-	if(currentUser != null)
-	if(currentUser.password == password && currentUser.match[index]!="")
-		io.emit('loadView', true, JSON.stringify(currentUser.match[index]));	
+	if(idChecker(email,password)&&getUser(email,password).match[index]!=null)
+		io.emit('loadView', true, JSON.stringify(getUser(email,password).match[index]));	
 	else
 		io.emit('loadView', false, "no match availible");
 	});
 });
 
 
+function checkRegex(string){
+var regex = /[^a-zA-Z0-9-_]/g;
+var regexValid = true,
+    str = string.match(regex);
+if(str!=null)
+if(str[0]!=null)
+	regexValid = false;
+return regexValid;
+}
 
 
 
+function idChecker(email, password){
+	var currentUser;
+	for(i = 0; i < users.length; i++){
+	if(users[i].email == email)
+		currentUser = users[i];
+		}
+	if(currentUser != null)
+	if(currentUser.password == password){
+	return true;
+	}
+	return false;
+}
 
+function getUser(email, password){
+	var currentUser;
+	for(i = 0; i < users.length; i++){
+	if(users[i].email == email)
+		currentUser = users[i];
+		}
+	if(currentUser != null)
+	if(currentUser.password == password){
+	return currentUser;
+	}
+	return null;
+}
 
-
-
-
-
-
+function distinct(email){
+	for(i=0; i<users.length; i++){
+		if(users[i].email == email)
+			return false;
+	}
+	return true;
+}
 
 
 

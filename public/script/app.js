@@ -33,7 +33,12 @@ var userName = document.getElementById("newName"),
 function createAccount(){
 socket.emit("createAccount", userName.value, email.value, password.value);
 socket.on ('error', function(valid){
+	if(valid)
 	alert("Please enter valid entry!");
+	else{
+		alert("account successfully created!")
+		displayLogin(),false;
+		}
 	});
 }
 
