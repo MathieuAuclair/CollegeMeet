@@ -5,21 +5,28 @@ var socket = io.connect();
 
 //get queryString information
 
+var userAccount = JSON.parse(getParameterByName("profile"));
 
-function getParameterByName(name, url) {
-if (!url) 
-url = window.location.href;
+//function to show description over a picture
 
-name = name.replace(/[\[\]]/g, "\\$&");
-var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-results = regex.exec(url);
-if (!results) return null;
-if (!results[2]) return '';
-return decodeURIComponent(results[2].replace(/\+/g, " "));
+var guessSelect = document.getElementById("aboutSelection");
+
+function displayInfo(index){
+	guessSelect.style.height = "350px";
+	socket.emit("viewAccount", userAccount.email, userAccount.password, index);
+	socket.on("loadView", function(valid, guessMatch){	
+		var view = JSON.parse(guessMatch);
+		if(valid && view != null){
+		guessSelect.children[0].innerHTML = view.name;
+		guessSelect.children[1].innerHTML = view.bio;
+		guessSelect.children[2].innerHTML = view.tag + " tag matched";
+		}
+		else{
+		guessSelect.children[0].innerHTML = "not availible";
+		guessSelect.children[1].innerHTML = "no match availible";
+		guessSelect.children[2].innerHTML = "0 tag matched";
+		}
+		
+	});	
 }
 
-var userAccount = getParameterByName("profile");
-console.log(JSON.parse(userAccount).name); 
-function loadFiles(){
-socket.emit("loadProfile");
-}

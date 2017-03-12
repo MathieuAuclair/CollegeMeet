@@ -21,8 +21,20 @@ function user(n, e, p){
 this.name = n,
 this.email = e,
 this.password = p,
-this.bio,
-this.friend
+this.bio = "",
+this.friend = [],
+this.match = [],
+this.tag = [],
+this.time = 0
+}
+
+//object to store friend view
+
+function friend(e, n, b, t) {
+this.email = e,
+this.name = n,
+this.bio = b,
+this.tag = t
 }
 
 io.sockets.on('connection', function(socket){
@@ -50,13 +62,26 @@ io.sockets.on('connection', function(socket){
 		if(users[i].email == email)
 			currentUser = users[i];
 		}
+	if(currentUser != null)
 	if(currentUser.password == password){
 		console.log("connected user on account!");
 		io.emit('loadHome', true, currentUser);
 		}
 	});
-});
 
+	socket.on('viewAccount', function(email, password, index){
+	var currentUser;
+	for(i = 0; i < users.length; i++){
+		if(users[i].email == email)
+			currentUser = users[i];
+		}
+	if(currentUser != null)
+	if(currentUser.password == password && currentUser.match[index]!="")
+		io.emit('loadView', true, JSON.stringify(currentUser.match[index]));	
+	else
+		io.emit('loadView', false, "no match availible");
+	});
+});
 
 
 

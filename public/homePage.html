@@ -16,15 +16,28 @@
 
 			<ul>
 				<li>profile</li>
-				<li>hub</li>
+				<li>friend</li>
 			</ul>	
 		</header>
 		<content id="content">
-			
+			<h2 id="titleName">Take a guess!</h2>
+			<p id="state">chose one person for the day!</p>	
+			<div id="selection">
+				<img onclick="displayInfo(1),false;"></img>
+				<img onclick="displayInfo(2),false;"></img>
+				<img onclick="displayInfo(3),false;"></img>
+			</div>
+			<div id="aboutSelection">
+				<h3>GuessName</h3>
+				<p>bio, a small intro about this person</p>
+				<h4>0 tag matched</h4>
+			</div>
 		</content>
 		<footer>
 			<p>Mathieu Auclair | MeetMe &reg </p>
 		</footer>
+
+		<script src="/script/url.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/script/home.js"></script>
 	</body>

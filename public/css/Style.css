@@ -122,6 +122,32 @@ margin:auto;
 width:70%;
 }
 
+content div img{
+display:inline-block;
+border:3px solid black;
+width:80px;
+height:80px;
+background:url("../img/logo.png");
+background-size:cover;
+background-repeat:no-repeat;
+background-position:center;
+transition:border 2s;
+}
+
+content div img:hover{
+border:3px solid blue;
+}
+
+#aboutSelection {
+height:0px;
+width:100%;
+background:rgba(0,0,100,0.2);
+overflow-y:scroll;
+transition:height 2s;
+margin-bottom:50px;
+margin-top:25px;
+}
+
 footer{
 height:100px;
 text-align:center;
@@ -198,5 +224,18 @@ margin-bottom:10px;
 	.textSummit input{
 	margin-right:15%;
 	width:20%;
+	}	
+	content div img{
+	height:135px;
+	width:135px;
+	}
+}
+
+
+
+@media screen and (min-width: 900px){
+	content div img{
+	height:250px;
+	width:250px;
 	}
 }
