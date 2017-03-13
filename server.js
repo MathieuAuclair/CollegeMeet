@@ -25,7 +25,8 @@ this.bio = "",
 this.friend = [],
 this.match = [],
 this.tag = [],
-this.time = 0
+this.time = 0,
+this.image = "";
 }
 
 //object to store friend view
@@ -71,6 +72,19 @@ io.sockets.on('connection', function(socket){
 		io.emit('loadView', true, JSON.stringify(getUser(email,password).match[index]));	
 	else
 		io.emit('loadView', false, "no match availible");
+	});
+	socket.on('modifProfile', function(password, email, modif, value){
+	if(idChecker(email, password)){
+		var currentUser = getUser(email, password);
+		switch(modif){
+			case 0:
+				currentUser.image = value;
+				break;
+			case 1:
+				currentUser.bio = value;
+				break;
+			}
+		}
 	});
 });
 
@@ -121,7 +135,19 @@ function distinct(email){
 	return true;
 }
 
-
+function modifProfile(email, password, modif, modifValue){
+if(idChecker(email,password)){
+	var currentUser = getUser(email,password);
+	switch(modif){
+		case 0:
+			currentUser.image = modifValue;
+			break;
+		case 1:
+			currentUser.bio = modifValue;
+			break;
+		}
+	}
+}
 
 
 
