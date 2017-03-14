@@ -193,6 +193,27 @@ content div img:hover{
 border:3px solid blue;
 }
 
+#tagBox{
+height:150px;
+width:60%;
+background:#121212;
+border:1px solid white;
+display:block;
+margin:auto;
+overflow-y:scroll;
+}
+
+#tagBox p{
+font-size:0.8em;
+display:inline-block;
+color:white;
+}
+
+#tagBox input{
+display:inline-block;
+width:25px;
+}
+
 .userInterface{
 display:inline-block;
 width:100%;
@@ -357,6 +378,9 @@ margin-bottom:10px;
 	}
 	#contact ul li{
 	line-height:350%;
+	}
+	#tagBox{
+	height:300px;
 	}
 }
 

@@ -29,3 +29,21 @@ if(bio.value.length < 350){
 else
 	alert("your bio is over 350 character");
 }
+
+//get every checked input
+
+var tagBox = document.getElementById("tagBox");
+var tagList = [];
+
+function updateTag(){
+	for(i = 0; i < tagBox.children.length/2; i++){
+		if(tagBox.children[i*2+1].checked){
+			tagList[tagList.length] = tagBox.children[i*2].innerHTML;	
+		}
+	}
+if(tagList.length > 6)
+	alert("maximum of 5 tag");		
+}
+
+
+
