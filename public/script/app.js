@@ -32,14 +32,18 @@ var userName = document.getElementById("newName"),
 //check if entry is valid
 function createAccount(){
 socket.emit("createAccount", userName.value, email.value, password.value);
+var noRepeat = true;
 socket.on ('error', function(valid){
-	if(valid)
+	if(valid && noRepeat){
 	alert("Please enter valid entry!");
-	else{
-		alert("account successfully created!")
+	noRepeat = false;
+	}
+	else if(noRepeat){
+		alert("account successfully created!");
 		displayLogin(),false;
 		}
 	});
+noRepeat = true;
 }
 
 //log in an account on the server

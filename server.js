@@ -143,6 +143,7 @@ if(idChecker(email,password)){
 			currentUser.image = modifValue;
 			break;
 		case 1:
+			if(checkRegex(currentUser.bio)&&currentUser.bio.length < 350)
 			currentUser.bio = modifValue;
 			break;
 		}
