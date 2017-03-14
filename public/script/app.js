@@ -3,6 +3,13 @@
 
 var socket = io.connect();
 
+//member counter
+
+var counter = document.getElementById("counter");
+socket.on('counter', function(count){
+counter.innerHTML = count + " online member";
+});
+
 //style slide signUp logIn
 
 var signIn = document.getElementById("signup");
@@ -35,12 +42,13 @@ socket.emit("createAccount", userName.value, email.value, password.value);
 var noRepeat = true;
 socket.on ('error', function(valid){
 	if(valid && noRepeat){
-	alert("Please enter valid entry!");
-	noRepeat = false;
+		alert("Please enter valid entry!");
+		noRepeat = false;
 	}
 	else if(noRepeat){
 		alert("account successfully created!");
 		displayLogin(),false;
+		noRepeat = false;
 		}
 	});
 noRepeat = true;

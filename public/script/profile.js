@@ -23,7 +23,7 @@ urlImg.value = "";
 }
 
 function chgBio(){
-if(bio.value.length >= 350)
+if(bio.value.length < 350)
 	chgProfile(1, bio.value);
 else
 	alert("your bio is over 350 character");

@@ -73,6 +73,9 @@ io.sockets.on('connection', function(socket){
 	else
 		io.emit('loadView', false, "no match availible");
 	});
+
+	io.emit('counter', online);
+
 	socket.on('modifProfile', function(password, email, modif, value){
 	if(idChecker(email, password)){
 		var currentUser = getUser(email, password);
