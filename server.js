@@ -90,7 +90,7 @@ io.sockets.on('connection', function(socket){
 
 
 function checkRegex(string){
-var regex = /[^a-zA-Z0-9-_]/g;
+var regex = /[^a-zA-Z0-9-_@ ]/g;
 var regexValid = true,
     str = string.match(regex);
 if(str!=null)
