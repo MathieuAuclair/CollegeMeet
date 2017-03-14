@@ -1,4 +1,7 @@
 
+
+//accessAccount('/profile.html?profile=', false);
+
 function getParameterByName(name, url) {
 	if (!url) 
 		url = window.location.href;

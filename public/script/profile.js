@@ -17,14 +17,15 @@ socket.emit("modifProfile", onlineUser.password, onlineUser.email, modif, value)
 }
 
 function chgImg(){
-image.src = urlImg.value;
 chgProfile(0, urlImg.value);
-urlImg.value = "";
+accessAccount('/profile.html?profile=', false);
 }
 
 function chgBio(){
-if(bio.value.length < 350)
+if(bio.value.length < 350){
 	chgProfile(1, bio.value);
+	accessAccount('/profile.html?profile=', false);
+}
 else
 	alert("your bio is over 350 character");
 }
