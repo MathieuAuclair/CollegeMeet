@@ -1,14 +1,13 @@
 {
   "name": "meetme",
   "version": "1.0.0",
-  "description": "A meeting website for college",
+  "description": "a simple chat",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.14.1",
     "http": "^0.0.0",
-    "socketio": "^1.0.0",
-    "react":"*",
-    "react-dom":"*"
+    "socket.io": "^1.7.3"
   },
   "devDependencies": {},
   "scripts": {
@@ -20,11 +19,8 @@
     "url": "https://www.github.com/MathieuAuclair/MeetMe"
   },
   "keywords": [
-    "meet",
-    "dating",
-    "student",
-    "college"
+    "chat"
   ],
-  "author": "Mathieu Auclair",
+  "author": "MathieuAuclair",
   "license": "ISC"
 }
