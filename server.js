@@ -57,7 +57,7 @@ io.sockets.on('connection', function(socket){
 
 app.post('/CountMembers', function(request, response){
 	console.log("Request recived!");
-	response.send("Server recived your request", 200);
+	response.send(online.toString(), 200);
 });
 
 
