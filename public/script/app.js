@@ -1,6 +1,15 @@
 
 
-//POST
+
+$("#signInButton").click(function(){
+	
+});
+
+$('#login').click(function(){
+
+});
+
+//Used to count online member
 
 $(document).ready(function(){
 	var message;
