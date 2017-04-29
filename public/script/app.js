@@ -1,12 +1,46 @@
 
+//set connection to the socket
 
+var socket = io('http://localhost:8080');
+
+//button html style
 
 $("#signInButton").click(function(){
+	$("#login").animate({
+		width:"0px",
+		height:"0px"
+	});
 	
+	$("#signup").animate({
+		height:"300px",
+		width:"100%"
+	});
 });
 
-$('#login').click(function(){
 
+$("#logInButton").click(function(){
+	$("#signup").animate({
+		width:"0px",
+		height:"0px"
+	});
+	$("#login").animate({
+		height:"300px",
+		width:"100%"
+	});
+});
+
+//send form
+
+$("#signInBtn").click(function(){
+	$.post("http://localhost:8080/signin", function(data){
+		alert(data);
+	});
+});
+
+$('#loginBtn').click(function(){
+	$.post("http://localhost:8080/login", function(data){
+		alert(data);
+	});
 });
 
 //Used to count online member
