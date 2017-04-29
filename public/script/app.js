@@ -29,17 +29,31 @@ $("#logInButton").click(function(){
 	});
 });
 
+//form content object
+
+function newAccountInfo(){
+this.name = document.getElementById("newName").value,
+this.email = document.getElementById("newEmail").value,
+this.password = document.getElementById("newPassword").value
+}
+
+function accountInfo(){
+this.email = document.getElementById("logEmail").value,
+this.password = document.getElementById("logPassword").value
+}
+
+
 //send form
 
 $("#signInBtn").click(function(){
-	$.post("http://localhost:8080/signin", function(data){
-		alert(data);
+	$.post("http://localhost:8080/signin", new newAccountInfo(), function(data){
+
 	});
 });
 
 $('#loginBtn').click(function(){
-	$.post("http://localhost:8080/login", function(data){
-		alert(data);
+	$.post("http://localhost:8080/login", new accountInfo(), function(data){
+
 	});
 });
 

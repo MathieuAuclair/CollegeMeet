@@ -2,18 +2,40 @@ var express = require("express");
 var app = express();
 var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
+var bodyParser = require("body-parser");
+var mysql = require("mysql");
+var connection = mysql.createConnection({
+	host: 'localhost',
+	user: 'root',
+	password : '*********',
+	database : 'MEETME'
+});
 
-//var mysql = require("mysql");
-//mysql.createConnection(function(){
+connection.connect(function(err){
+	if(err){
+	console.log("error while connecting to database");
+	console.log(err.code);
+	}
+});
 
+//function that query database
 
-//});
+function queryDatabase(userQuery){
+	connection.query(userQuery, function(err, result){
+		if(err){
+			throw err;
+		}
+		console.log(result);
+	});
+}
 
 //node js server setup
 
 server.listen(process.env.PORT || 8080);
 console.log("Server is running on localhost:8080\n*\n*\n*");
 
+app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.json());
 app.use(express.static("public"));
 
 //object to store users
@@ -46,9 +68,22 @@ io.sockets.on("connection", function(socket){
 });
 
 //POST
+app.post('/signin', function(request, response){
+	var query = "SELECT * FROM MEMBER";
+	if(queryDatabase(query) == null){
+	response.end("not found", 404);
+	}
+	else{
+	console.log("succes");
+	response.end("request found", 200);
+	}
+});
+
+app.post('/login', function(request, accountInfo, response){
+	console.log(request.body.email);
+});
 
 app.post('/CountMembers', function(request, response){
-	console.log("Request recived!");
-	response.send(online.toString(), 200);
+	response.end(online.toString(), 200);
 });
 
