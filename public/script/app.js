@@ -47,13 +47,13 @@ this.password = document.getElementById("logPassword").value
 
 $("#signInBtn").click(function(){
 	$.post("http://localhost:8080/signin", new newAccountInfo(), function(data){
-
+	alert(data);
 	});
 });
 
 $('#loginBtn').click(function(){
 	$.post("http://localhost:8080/login", new accountInfo(), function(data){
-
+	alert(data);
 	});
 });
 

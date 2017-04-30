@@ -4,9 +4,11 @@
   "description": "a simple chat",
   "main": "server.js",
   "dependencies": {
+    "async": "^2.4.0",
     "body-parser": "^1.17.1",
     "express": "^4.14.1",
     "http": "^0.0.0",
+    "promise": "^7.1.1",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {},

@@ -4,10 +4,11 @@ var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
 var bodyParser = require("body-parser");
 var mysql = require("mysql");
+var Promise = require("promise");
 var connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
-	password : '*********',
+	password : 'AUCM12099709',
 	database : 'MEETME'
 });
 
@@ -21,12 +22,15 @@ connection.connect(function(err){
 //function that query database
 
 function queryDatabase(userQuery){
-	connection.query(userQuery, function(err, result){
-		if(err){
-			throw err;
-		}
-		console.log(result);
-	});
+	return new Promise((resolve,reject) => {
+        	connection.query(userQuery, function(err, result){
+			if(err){
+			reject(err);
+			}
+			console.log("before");
+			resolve(result);
+		}); 
+	}); 
 }
 
 //node js server setup
@@ -69,14 +73,11 @@ io.sockets.on("connection", function(socket){
 
 //POST
 app.post('/signin', function(request, response){
-	var query = "SELECT * FROM MEMBER";
-	if(queryDatabase(query) == null){
-	response.end("not found", 404);
-	}
-	else{
-	console.log("succes");
-	response.end("request found", 200);
-	}
+	Promise.all([
+	queryDatabase("SELECT EMAIL FROM MEMBER WHERE ID_MEMBER = 3")
+	])
+	.then((result) => response.end(result[0][0].EMAIL))
+	.catch((err) => console.log(err));
 });
 
 app.post('/login', function(request, accountInfo, response){
