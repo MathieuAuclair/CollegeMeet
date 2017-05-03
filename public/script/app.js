@@ -46,9 +46,20 @@ this.password = document.getElementById("logPassword").value
 //send form
 
 $("#signInBtn").click(function(){
-	$.post("http://localhost:8080/signin", new newAccountInfo(), function(data){
-	alert(data);
-	});
+	account = new newAccountInfo();
+	if(validateAccount(account)){
+		$.post("http://localhost:8080/signin", account, function(data){
+			if(data=="true"){
+				alert("account has been created!");
+			}
+			else{
+				alert("sorry this email is already occupied...");
+			}
+		});
+	}
+	else{
+		alert("please enter valid email and no special characters\n# / * < > ' ");
+	}
 });
 
 $('#loginBtn').click(function(){
@@ -66,3 +77,8 @@ $(document).ready(function(){
 	});
 });
 
+function validateAccount(account) {
+	    var emailReg= /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+	    var normalReg= /^[A-Za-z0-9-_!]/
+	    return(emailReg.test(account.email)&&normalReg.test(account.name)&&normalReg.test(account.password));
+}

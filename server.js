@@ -27,7 +27,6 @@ function queryDatabase(userQuery){
 			if(err){
 			reject(err);
 			}
-			console.log("before");
 			resolve(result);
 		}); 
 	}); 
@@ -71,17 +70,44 @@ io.sockets.on("connection", function(socket){
 	});
 });
 
+/*
+delete from orders 
+where id_users = 1 and id_product = 2
+limit 1
+*/
+
+
+function validateAccount(account) {
+	    var emailReg= /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+	    var normalReg= /^[A-Za-z0-9-_!]/
+	    return(emailReg.test(account.email)&&normalReg.test(account.name)&&normalReg.test(account.password));
+}
+
 //POST
 app.post('/signin', function(request, response){
 	Promise.all([
-	queryDatabase("SELECT EMAIL FROM MEMBER WHERE ID_MEMBER = 3")
+	queryDatabase("SELECT EMAIL FROM MEMBER WHERE EMAIL = '"+request.body.email+"'")
 	])
-	.then((result) => response.end(result[0][0].EMAIL))
+	.then((result) => response.end(createNewAccount(request.body, result[0].length)))
 	.catch((err) => console.log(err));
 });
 
+function createNewAccount(user, researchLength){
+	if(researchLength === 0 && validateAccount(user)){
+	queryDatabase("INSERT INTO MEMBER (EMAIL, NAME, BIRTH, GENDER, IMGPROFILE, BIO, PASSWORD) " + 
+		      "VALUES ('"+user.email+"','"+user.name+"',NULL,NULL,NULL,NULL,'"+user.password+"');"
+		      );
+	console.log("new user created");
+	return "true";
+	}
+	else{
+	return "false";
+	}
+}
+
 app.post('/login', function(request, accountInfo, response){
-	console.log(request.body.email);
+	//console.log(request.body.email);
+	console.log("testing?");
 });
 
 app.post('/CountMembers', function(request, response){
