@@ -1,7 +1,7 @@
 
 //set connection to the socket
 
-var socket = io('http://localhost:8080');
+//var socket = io('http://localhost:8080');
 
 //button html style
 
@@ -64,7 +64,12 @@ $("#signInBtn").click(function(){
 
 $('#loginBtn').click(function(){
 	$.post("http://localhost:8080/login", new accountInfo(), function(data){
-	alert(data);
+		if(data == "false"){
+		alert("wrong password or username, please try again!");
+		}
+		else{
+		window.location.href = "http://localhost:8080/homePage.html?id=" + data;
+		}
 	});
 });
 

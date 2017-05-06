@@ -5,12 +5,18 @@ var io = require("socket.io").listen(server);
 var bodyParser = require("body-parser");
 var mysql = require("mysql");
 var Promise = require("promise");
+//var fs = require("fs");
+//var CryptoJS = require("crypto-js");
 var connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
 	password : 'AUCM12099709',
 	database : 'MEETME'
 });
+
+var online = [];
+
+//var serverHashKey = "123";
 
 connection.connect(function(err){
 	if(err){
@@ -55,18 +61,15 @@ this.time = 0,
 this.image = "";
 }
 
-//count of online person
-
-var online = 0;
+//socketIO
 
 io.sockets.on("connection", function(socket){
 	//connection
-	online++;	
-	console.log(online + "connection");
+	
 	//disconnect
 	socket.on("disconnect", function(data){
-	online--;
-	console.log(online + "connection");
+	
+	
 	});
 });
 
@@ -105,12 +108,42 @@ function createNewAccount(user, researchLength){
 	}
 }
 
-app.post('/login', function(request, accountInfo, response){
-	//console.log(request.body.email);
-	console.log("testing?");
+app.post('/login', function(request, response){
+	connection.query("SELECT * FROM MEMBER WHERE EMAIL = '"+request.body.email+ "' AND PASSWORD = '" + request.body.password + "'", function(err, result){
+		if(err){
+		console.log("error while login");
+		console.log(err.code);
+		}
+		else if(result.length === 0){
+		response.send("false");
+		}
+		else{
+		var session = utf8_to_b64(connection.length + request.body.email);
+		online[online.length] = (new liveSession(request.body.email, session));
+		response.send(session);
+		}
+
+	});
 });
 
+function utf8_to_b64(str){
+	var base64 = new Buffer(str);
+	console.log(base64.toString('base64'));
+	return base64.toString('base64');
+}
+
+//function hashSessionId(id) {
+//	return CryptoJS.HmacSHA1(id, serverHashKey);
+//}
+
+function liveSession(userEmail, userID){
+this.sessionID = userID;
+this.email = userEmail;
+}
+
 app.post('/CountMembers', function(request, response){
-	response.end(online.toString(), 200);
+	console.log(online.length);
+	response.end(online.length.toString());
 });
+
 
