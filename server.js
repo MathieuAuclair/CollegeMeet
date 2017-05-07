@@ -97,8 +97,8 @@ app.post('/signin', function(request, response){
 
 function createNewAccount(user, researchLength){
 	if(researchLength === 0 && validateAccount(user)){
-	queryDatabase("INSERT INTO MEMBER (EMAIL, NAME, BIRTH, GENDER, IMGPROFILE, BIO, PASSWORD) " + 
-		      "VALUES ('"+user.email+"','"+user.name+"',NULL,NULL,NULL,NULL,'"+user.password+"');"
+	queryDatabase("INSERT INTO MEMBER (EMAIL, NAME, BIRTH, GENDER, IMGPROFILE, BIO, PASSWORD, LASTMATCH) " + 
+		      "VALUES ('"+user.email+"','"+user.name+"',NULL,NULL,NULL,NULL,'"+user.password+"','2017-00-00');"
 		      );
 	console.log("new user created");
 	return "true";
@@ -155,17 +155,26 @@ app.post('/getDailyMatch', function(request, response){
 			break;
 		}
 	}
-	if(userEmail != null){
-		connection.query("SELECT * FROM DAILYMATCH WHERE EMAIL !='" + userEmail + "'", function(err, result){
-			if(err){
-			console.log("error while loading match view");
-			console.log(err.code);
-			}
-			response.send(result);
-		});
+	
+	if(userEmail == null){
+		console.log("error loading user info");
+		response.send("false");
 	}
 	else{
-	console.log("error loading user info");
-	response.end("false");
+		connection.query("SELECT TIMESTAMPDIFF(HOUR, LASTMATCH,NOW()) FROM MEMBER WHERE EMAIL = '" + userEmail + "'",function(err, result){
+			if(result[0]["TIMESTAMPDIFF(HOUR, LASTMATCH,NOW())"] < 24){
+			response.send("true");
+			}
+			else if(userEmail != null){
+				connection.query("SELECT * FROM DAILYMATCH WHERE EMAIL !='" + userEmail 
+						+ "' ORDER BY LASTMATCH LIMIT 3", function(err, resultmatch){
+					if(err){
+					console.log("error while loading match view");
+					console.log(err.code);
+					}
+					response.send(resultmatch);
+				});
+			}
+		});
 	}
 });
