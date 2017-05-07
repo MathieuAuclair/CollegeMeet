@@ -6,8 +6,9 @@
 		<!-- Check Device Width so Media Queries will work -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="css/Style.css">
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 	</head>
-	<body onresize="screenAjust();">
+	<body>
 		<header>
 			<div>
 				<img src="img/logo.png"></img>
@@ -15,17 +16,17 @@
 			</div>
 
 			<ul>
-				<li onclick="accessAccount('profile.html?profile=',false);">profile</li>
-				<li onclick="accessAccount('friend.html?profile=',false);">friend</li>
+				<li onclick="">profile</li>
+				<li onclick="">friend</li>
 			</ul>	
 		</header>
 		<content id="content">
 			<h2>Take a guess!</h2>
 			<p id="state">chose one person for the day!</p>	
 			<div id="selection">
-				<img onclick="displayInfo(1),false;"></img>
-				<img onclick="displayInfo(2),false;"></img>
-				<img onclick="displayInfo(3),false;"></img>
+				<img onclick="getMoreInfoOnProfile(0)"></img>
+				<img onclick="getMoreInfoOnProfile(1)"></img>
+				<img onclick="getMoreInfoOnProfile(2)"></img>
 			</div>
 			<div id="aboutSelection">
 				<h3>GuessName</h3>
@@ -37,8 +38,6 @@
 		<footer>
 			<p>Mathieu Auclair | MeetMe &reg </p>
 		</footer>
-
-		<script src="/script/url.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/script/home.js"></script>
 	</body>

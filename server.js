@@ -109,7 +109,8 @@ function createNewAccount(user, researchLength){
 }
 
 app.post('/login', function(request, response){
-	connection.query("SELECT * FROM MEMBER WHERE EMAIL = '"+request.body.email+ "' AND PASSWORD = '" + request.body.password + "'", function(err, result){
+	connection.query("SELECT * FROM MEMBER WHERE EMAIL = '"+request.body.email + 
+			 "' AND PASSWORD = '" + request.body.password + "'", function(err, result){
 		if(err){
 		console.log("error while login");
 		console.log(err.code);
@@ -128,8 +129,8 @@ app.post('/login', function(request, response){
 
 function utf8_to_b64(str){
 	var base64 = new Buffer(str);
-	console.log(base64.toString('base64'));
-	return base64.toString('base64');
+	base64 = base64.toString('base64');
+	return base64.replace(/=/g, '');//remove the 2 last == so it won't break my code later on
 }
 
 //function hashSessionId(id) {
@@ -142,8 +143,29 @@ this.email = userEmail;
 }
 
 app.post('/CountMembers', function(request, response){
-	console.log(online.length);
 	response.end(online.length.toString());
 });
 
-
+app.post('/getDailyMatch', function(request, response){
+	var userEmail;
+	for(i=0; i<online.length; i++){
+		if(online[i].sessionID == request.body.id){
+			userEmail = online[i].email; //get current session user
+			online.splice(i,1);
+			break;
+		}
+	}
+	if(userEmail != null){
+		connection.query("SELECT * FROM DAILYMATCH WHERE EMAIL !='" + userEmail + "'", function(err, result){
+			if(err){
+			console.log("error while loading match view");
+			console.log(err.code);
+			}
+			response.send(result);
+		});
+	}
+	else{
+	console.log("error loading user info");
+	response.end("false");
+	}
+});
