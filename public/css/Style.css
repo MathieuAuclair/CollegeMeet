@@ -267,7 +267,7 @@ height:80px;
 margin-bottom:20px;
 line-height:400%;
 overflow-x:scroll;
-overflor-y:hidden;
+overflow-y:hidden;
 }
 
 #contact ul{
@@ -284,10 +284,12 @@ height:0px;
 width:100%;
 background:rgba(0,0,150,0.5);
 overflow-y:scroll;
-transition:height 2s;
+transition:height 1.5s;
 margin-bottom:50px;
 margin-top:25px;
+  
 }
+
 
 footer{
 height:100px;

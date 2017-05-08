@@ -14,9 +14,8 @@ var connection = mysql.createConnection({
 	database : 'MEETME'
 });
 
+//list of live connection
 var online = [];
-
-//var serverHashKey = "123";
 
 connection.connect(function(err){
 	if(err){
@@ -142,32 +141,49 @@ this.sessionID = userID;
 this.email = userEmail;
 }
 
-app.post('/CountMembers', function(request, response){
-	response.end(online.length.toString());
-});
-
-app.post('/getDailyMatch', function(request, response){
-	var userEmail;
+app.post('/getLiveSession', function(request, response){
+	var userSession;
 	for(i=0; i<online.length; i++){
 		if(online[i].sessionID == request.body.id){
-			userEmail = online[i].email; //get current session user
+			userSession = online[i].email; //get current session user
 			online.splice(i,1);
 			break;
 		}
 	}
-	
-	if(userEmail == null){
+	connection.query("SELECT * FROM MEMBER WHERE EMAIL = '" + userSession + "'", function(err, result){
+	response.send(result[0]);
+	});
+});
+
+app.post('/CountMember', function(request, response){
+	response.send(online.length.toString());
+});
+
+app.post('/getDailyMatch', function(request, response){
+	var user = request.body;
+	if(user == null){
 		console.log("error loading user info");
 		response.send("false");
 	}
 	else{
-		connection.query("SELECT TIMESTAMPDIFF(HOUR, LASTMATCH,NOW()) FROM MEMBER WHERE EMAIL = '" + userEmail + "'",function(err, result){
-			if(result[0]["TIMESTAMPDIFF(HOUR, LASTMATCH,NOW())"] < 24){
+		connection.query("SELECT TIMESTAMPDIFF(HOUR, LASTMATCH,NOW()) "
+			       + "FROM MEMBER "
+			       + "WHERE EMAIL = '" + user.email + "' " 
+			       + "AND PASSWORD = '" + user.password + "'",function(err, resultUser){
+			if(err){
+			console.log("error while loading timestamp l.175")
+			console.log(err.code);
+			}
+			else if(resultUser[0]["TIMESTAMPDIFF(HOUR, LASTMATCH,NOW())"] < 24){
 			response.send("true");
 			}
-			else if(userEmail != null){
-				connection.query("SELECT * FROM DAILYMATCH WHERE EMAIL !='" + userEmail 
-						+ "' ORDER BY LASTMATCH LIMIT 3", function(err, resultmatch){
+			else if(user != null){
+				connection.query("SELECT * FROM DAILYMATCH WHERE EMAIL !='" + user
+						+ "' AND EMAIL NOT IN ("
+						+ "SELECT ID_FRIEND FROM FRIEND "
+						+ "WHERE ID_MEMBER = '" + user + "'"
+						+ ")"
+					       	+ "ORDER BY LASTMATCH LIMIT 3", function(err, resultmatch){
 					if(err){
 					console.log("error while loading match view");
 					console.log(err.code);
