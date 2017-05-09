@@ -169,7 +169,6 @@ this.email = userEmail;
 app.post('/getLiveSession', function(request, response){
 	var userSession;
 	for(i=0; i<online.length; i++){
-		console.log("log " + i + " : " + online[i].sessionID);
 		if(online[i].sessionID == request.body.id){
 			userSession = online[i].email; //get current session user
 			online.splice(i,1);
@@ -205,9 +204,10 @@ app.post('/addFriend', function(request, response){
 			response.send("false");
 			}
 			else{
-				connection.query("UPDATE MEMBER SET LASTMATCH = CURDATE() WHERE EMAIL = '" + request.body.email + "';",
-				function(err, set){
-					if(err){
+				//UPDATE MEMBER SET LASTMATCH = CURDATE() WHERE EMAIL = 'math@mail.com';
+				connection.query("UPDATE MEMBER SET LASTMATCH = CURDATE() WHERE EMAIL = '" + request.body.user + "'",
+				function(errUpdate, set){
+					if(errUpdate){
 					throw err;
 					}
 					connection.query(
@@ -256,8 +256,9 @@ app.post('/getDailyMatch', function(request, response){
 					console.log("error while loading match view");
 					console.log(err.code);
 					}
-					
+					else{
 					response.send(resultmatch);
+					}
 				});
 			}
 		});
