@@ -152,12 +152,13 @@ app.post('/getConvo', function(request, response){
 			 "PASSWORD = '" + user.PASSWORD + "'"+
 			 ") "+
 			 "OR "+
-			 "ID_MEMBER IN "+
+			 "ID_FRIEND IN "+
 			 "("+
 			 "SELECT EMAIL FROM MEMBER WHERE EMAIL = '" + user.EMAIL + "' "+
 			 "AND "+
 			 "PASSWORD = '" + user.PASSWORD + "'"+
-			 ")",
+			 ") "+
+			 "ORDER BY TIMESENT;",
 	function(err, resultMsg){
 		if(err){
 		throw err;

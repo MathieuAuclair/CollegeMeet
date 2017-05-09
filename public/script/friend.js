@@ -36,7 +36,7 @@ function getFriend(friendId){
 		messageBox.innerHTML = "";
 		for(i=0;i<data.length;i++){
 			var from;
-			if(data[i].SENDER === currentUserInfo.EMAIL){
+			if(data[i].SENDER == currentUserInfo.EMAIL){
 			from = "send";
 			}
 			else{
@@ -57,3 +57,5 @@ function getJsonFromUrl() {
 	});
 	return result;
 }
+
+
