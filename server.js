@@ -183,7 +183,7 @@ app.post('/getLiveSession', function(request, response){
 	});
 });
 
-app.post('/CountMember', function(request, response){
+app.post('/CountMembers', function(request, response){
 	response.send(onlineUser.toString());
 });
 
