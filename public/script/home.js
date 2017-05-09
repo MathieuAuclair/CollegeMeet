@@ -1,6 +1,6 @@
 //connection to socket
 
-//var socket = io.connect();
+var socket = io.connect();
 
 //store daily match
 var dailyMatch = [];
@@ -24,7 +24,7 @@ $(document).ready(function(){
 			$.post("http://localhost:8080/getDailyMatch", {"email":currentUserInfo.EMAIL,"password":currentUserInfo.PASSWORD}, function(data){
 			if(data === "false"){
 			alert("sorry, there was an error, please log again");
-			window.location.href = "http://localhost:80";
+			window.location.href = "http://localhost:8080";
 			}
 			else if(data === "true"){
 			document.getElementById("state").innerHTML = "sorry no more match today..."
@@ -58,7 +58,7 @@ var noAnimationInProcess = true;
 var firstTimeAnim = true;
 
 function getMoreInfoOnProfile(matchViewId){
-	currentSelectedMatch = dailyMatch[matchViewId];
+	currentSelectedMatch = dailyMatch[matchViewId].EMAIL;
 	var time = 1500;
 	if(firstTimeAnim){
 	firstTimeAnim = false;
@@ -71,7 +71,7 @@ function getMoreInfoOnProfile(matchViewId){
 		setTimeout(function(){	
 		about.children[0].innerHTML = dailyMatch[matchViewId].NAME;
 		about.children[1].innerHTML = dailyMatch[matchViewId].BIO;
-		about.children[2].innerHTML = "not availible";
+		about.children[2].innerHTML = "not available";
 		about.style.height = "400px";
 		noAnimationInProcess = true;
 		}, time);
@@ -80,23 +80,23 @@ function getMoreInfoOnProfile(matchViewId){
 	alert("sorry no match availible at this time!");
 	}
 }
-/*
-function formToAddFriend(){
-this.currentUser = 
-}
+
 
 $("#addFriend").click(function(){
 	if(currentSelectedMatch == null){
 	alert("select a match before pressing this button");
 	}
 	else{
-		$.post("http://localhost:8080/addFriend", selectedMatch, function(data){
-			if(data){
-			alert("friend added!");
+		$.post("http://localhost:8080/addFriend", {"email":currentSelectedMatch, "user":currentUserInfo.EMAIL, "password":currentUserInfo.PASSWORD}, function(data){
+			if(data == "true"){
+				alert("friend added!");
+				$.post("http://localhost:8080/createLiveSession", currentUserInfo, function(data){
+				window.location.href = "http://localhost:8080/homePage.html?id=" + data;
+				});
 			}
 			else{
 			alert("there was a problem while adding friend, please try later...");
 			}
 		});
 	}
-});*/
+});

@@ -4,7 +4,7 @@ var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
 var bodyParser = require("body-parser");
 var mysql = require("mysql");
-var Promise = require("promise");
+//var Promise = require("promise");
 //var fs = require("fs");
 //var CryptoJS = require("crypto-js");
 var connection = mysql.createConnection({
@@ -26,16 +26,16 @@ connection.connect(function(err){
 
 //function that query database
 
-function queryDatabase(userQuery){
-	return new Promise((resolve,reject) => {
-        	connection.query(userQuery, function(err, result){
-			if(err){
-			reject(err);
-			}
-			resolve(result);
-		}); 
-	}); 
-}
+//function queryDatabase(userQuery){
+//	return new Promise((resolve,reject) => {
+//        	connection.query(userQuery, function(err, result){
+//			if(err){
+//			reject(err);
+//			}
+//			resolve(result);
+//		}); 
+//	}); 
+//}
 
 //node js server setup
 
@@ -46,29 +46,16 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
-//object to store users
-
-function user(n, e, p){
-this.name = n,
-this.email = e,
-this.password = p,
-this.bio = "",
-this.friend = [],
-this.match = [],
-this.tag = [],
-this.time = 0,
-this.image = "";
-}
-
 //socketIO
+
+var onlineUser = 0;
 
 io.sockets.on("connection", function(socket){
 	//connection
-	
+	onlineUser++;
 	//disconnect
 	socket.on("disconnect", function(data){
-	
-	
+	onlineUser--;
 	});
 });
 
@@ -87,25 +74,50 @@ function validateAccount(account) {
 
 //POST
 app.post('/signin', function(request, response){
-	Promise.all([
-	queryDatabase("SELECT EMAIL FROM MEMBER WHERE EMAIL = '"+request.body.email+"'")
-	])
-	.then((result) => response.end(createNewAccount(request.body, result[0].length)))
-	.catch((err) => console.log(err));
+//	Promise.all([
+//	queryDatabase("SELECT EMAIL FROM MEMBER WHERE EMAIL = '"+request.body.email+"'")
+//	])
+//	.then((result) => response.end(createNewAccount(request.body, result[0].length)))
+//	.catch((err) => console.log(err));
+
+	connection.query("SELECT EMAIL FROM MEMBER WHERE EMAIL = '"+request.body.email+"'", function(err, result){
+		if(result.length === 0 && validateAccount(request.body)){
+			console.log("new account created!");
+			connection.query("INSERT INTO MEMBER (EMAIL, NAME, BIRTH, GENDER, IMGPROFILE, BIO, PASSWORD, LASTMATCH) "+
+				 "VALUES ("+
+				 "'" + request.body.email + "', "+
+				 "'" + request.body.name  + "', "+
+				 "NULL, NULL, NULL, NULL, "+
+				 "'" + request.body.password + "', "+
+				 "'2017-01-01')", function(err, result){
+				if(err){
+					console.log(err.code);
+					console.log("line 94");
+				}
+				else{
+					response.send("true");
+				}
+
+			});
+		}
+		else{
+			response.end();
+		}
+	});
 });
 
-function createNewAccount(user, researchLength){
-	if(researchLength === 0 && validateAccount(user)){
-	queryDatabase("INSERT INTO MEMBER (EMAIL, NAME, BIRTH, GENDER, IMGPROFILE, BIO, PASSWORD, LASTMATCH) " + 
-		      "VALUES ('"+user.email+"','"+user.name+"',NULL,NULL,NULL,NULL,'"+user.password+"','2017-00-00');"
-		      );
-	console.log("new user created");
-	return "true";
-	}
-	else{
-	return "false";
-	}
-}
+//function createNewAccount(user, researchLength){
+//	if(researchLength === 0 && validateAccount(user)){
+//	queryDatabase("INSERT INTO MEMBER (EMAIL, NAME, BIRTH, GENDER, IMGPROFILE, BIO, PASSWORD, LASTMATCH) " + 
+//		      "VALUES ('"+user.email+"','"+user.name+"',NULL,NULL,NULL,NULL,'"+user.password+"','2017-00-00');"
+//		      );
+//	console.log("new user created");
+//	return "true";
+//	}
+//	else{
+//	return "false";
+//	}
+//}
 
 app.post('/login', function(request, response){
 	connection.query("SELECT * FROM MEMBER WHERE EMAIL = '"+request.body.email + 
@@ -123,6 +135,19 @@ app.post('/login', function(request, response){
 		response.send(session);
 		}
 
+	});
+});
+
+app.post("/createLiveSession", function(request, response){
+	connection.query("SELECT EMAIL FROM MEMBER WHERE PASSWORD = '" 
+			+ request.body.PASSWORD + "' AND EMAIL = '" 
+			+ request.body.EMAIL + "'", function(err, result){
+		if(err){
+			throw err;
+		}
+		var sessID = utf8_to_b64(online.length.toString() + request.body.EMAIL);
+		online[online.length] = new liveSession(request.body.EMAIL, sessID);
+		response.send(sessID);
 	});
 });
 
@@ -144,6 +169,7 @@ this.email = userEmail;
 app.post('/getLiveSession', function(request, response){
 	var userSession;
 	for(i=0; i<online.length; i++){
+		console.log("log " + i + " : " + online[i].sessionID);
 		if(online[i].sessionID == request.body.id){
 			userSession = online[i].email; //get current session user
 			online.splice(i,1);
@@ -151,12 +177,54 @@ app.post('/getLiveSession', function(request, response){
 		}
 	}
 	connection.query("SELECT * FROM MEMBER WHERE EMAIL = '" + userSession + "'", function(err, result){
-	response.send(result[0]);
+		if(err){
+		throw err;
+		}
+		response.send(result[0]);
 	});
 });
 
 app.post('/CountMember', function(request, response){
-	response.send(online.length.toString());
+	response.send(onlineUser.toString());
+});
+
+app.post('/addFriend', function(request, response){
+	if(request.body != null){
+		connection.query("SELECT TIMESTAMPDIFF(HOUR, LASTMATCH,NOW()) "
+			       + "FROM MEMBER "
+			       + "WHERE EMAIL = '" + request.body.user + "' " 
+			       + "AND PASSWORD = '" + request.body.password + "'",function(err, resultUser){
+			if(err){
+			throw err;
+			}
+			else if(resultUser.lenght === 0){
+			console.log("Empty query launched... ?")
+			response.send("false");
+			}
+			else if(resultUser[0]["TIMESTAMPDIFF(HOUR, LASTMATCH,NOW())"] < 24){
+			response.send("false");
+			}
+			else{
+				connection.query("UPDATE MEMBER SET LASTMATCH = CURDATE() WHERE EMAIL = '" + request.body.email + "';",
+				function(err, set){
+					if(err){
+					throw err;
+					}
+					connection.query(
+					"INSERT INTO FRIEND "+
+					"SET ID_MEMBER = '"+request.body.user+"', "+
+					"ID_FRIEND = '"+request.body.email+"';",
+					function(err,result){
+						if(err){
+						throw err;
+						}
+						console.log("new friend request");
+						response.send("true");
+					});
+				});
+			}
+		});
+	}
 });
 
 app.post('/getDailyMatch', function(request, response){
@@ -178,16 +246,17 @@ app.post('/getDailyMatch', function(request, response){
 			response.send("true");
 			}
 			else if(user != null){
-				connection.query("SELECT * FROM DAILYMATCH WHERE EMAIL !='" + user
+				connection.query("SELECT * FROM DAILYMATCH WHERE EMAIL !='" + user.email
 						+ "' AND EMAIL NOT IN ("
 						+ "SELECT ID_FRIEND FROM FRIEND "
-						+ "WHERE ID_MEMBER = '" + user + "'"
+						+ "WHERE ID_MEMBER = '" + user.email + "'"
 						+ ")"
 					       	+ "ORDER BY LASTMATCH LIMIT 3", function(err, resultmatch){
 					if(err){
 					console.log("error while loading match view");
 					console.log(err.code);
 					}
+					
 					response.send(resultmatch);
 				});
 			}
