@@ -27,8 +27,24 @@ $(document).ready(function(){
 	});
 });
 
+var messageBox = document.getElementById("convo");
+
 function getFriend(friendId){
-	$.post("http://localhost:8080/getConvo", {'user':JSON.stringify(currentUserInfo), 'email':friendholder.children[friendId].innerHTML}, function(data){ alert(JSON.stringify(data));
+	$.post("http://localhost:8080/getConvo", 
+	{'user':JSON.stringify(currentUserInfo), 'email':friendholder.children[friendId].innerHTML},
+	function(data){
+		messageBox.innerHTML = "";
+		for(i=0;i<data.length;i++){
+			var from;
+			if(data[i].SENDER === currentUserInfo.EMAIL){
+			from = "send";
+			}
+			else{
+			from = "recive";
+			}
+
+			messageBox.innerHTML += "<p class='"+from+"'>"+data[i].CONTENT+"</p>";
+		}
 	});
 }
 
