@@ -1,6 +1,6 @@
 //connect to socket
 
-var socket = io.connect();
+var socket = io.connect('http://localhost:8080');
 
 //current user info
 
@@ -29,7 +29,18 @@ $(document).ready(function(){
 
 var messageBox = document.getElementById("convo");
 
+var currentTalk = "";
+var currentTalkId = 0;
+
+socket.on("notification", function(data){
+	if(data.to == currentUserInfo.EMAIL && data.from == currentTalk){
+		getFriend(currentTalkId);
+	}	
+});
+
 function getFriend(friendId){
+	currentTalkId = friendId;
+	currentTalk = friendholder.children[friendId].innerHTML;
 	$.post("http://localhost:8080/getConvo", 
 	{'user':JSON.stringify(currentUserInfo), 'email':friendholder.children[friendId].innerHTML},
 	function(data){
@@ -58,4 +69,17 @@ function getJsonFromUrl() {
 	return result;
 }
 
+var messageContainer = document.getElementById("writeArea").children[0];
 
+$("#sendMsg").click(function(){
+	$.post("http://localhost:8080/sendMessage", {"content":messageContainer.value,
+						     "user":currentUserInfo.EMAIL,	
+						     "friend":currentTalk
+						    },function(data){
+							    console.log("from:"+currentUserInfo.EMAIL+"\nto:"+currentTalk);
+	messageBox.innerHTML += "<p class='send'>" + messageContainer.value + "</p>";
+	messageContainer.value = "";
+	});
+	
+	socket.emit("sendNotification", {"from":currentUserInfo.EMAIL, "to":currentTalk});
+});

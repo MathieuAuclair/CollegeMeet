@@ -57,6 +57,11 @@ io.sockets.on("connection", function(socket){
 	socket.on("disconnect", function(data){
 	onlineUser--;
 	});
+
+	socket.on('sendNotification', function (data) {
+		console.log("message");
+		socket.emit('notification', data);
+	});
 });
 
 /*
@@ -128,6 +133,24 @@ app.post('/getFriendList', function(request, response){
 		response.send(result);
 		}
 	});
+});
+
+app.post('/sendMessage', function(request, response){ //super unsafe... well... this homework is due for next class... 
+						      //wich is in 3h from now.. fair enough!! Congrat to myself! 
+	connection.query("INSERT INTO MESSAGE SET "+
+			 "ID_MEMBER = '" + request.body.user + "', "+
+			 "ID_FRIEND = '" + request.body.friend + "', "+
+			 "CONTENT = '" + request.body.content + "', "+
+			 "SENDER = '" + request.body.user + "', "+
+			 "TIMESENT = NOW();",
+			 function(err, result){
+			 	if(err){
+				throw err;
+				}
+				else{
+				response.send("ok");
+				}
+			 });
 });
 
 app.post('/getConvo', function(request, response){
