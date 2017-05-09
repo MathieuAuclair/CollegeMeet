@@ -338,3 +338,19 @@ app.post('/getDailyMatch', function(request, response){
 		});
 	}
 });
+
+app.post("/updateBio", function(request, response){
+	connection.query("UPDATE MEMBER SET BIO='"+request.body.bio+"' WHERE EMAIL = '" + request.body.email + "';", function(err,result){
+	//UPDATE TableName SET   ValueName=@parameterName  WHERE
+	//IdName=@ParameterIdName
+	response.send("ok");
+	});
+});
+
+app.post("/updateImage", function(request, response){
+	connection.query("UPDATE MEMBER SET IMGPROFILE='"+request.body.id+"' WHERE EMAIL = '" + request.body.email + "';", function(err,result){
+	//UPDATE TableName SET   ValueName=@parameterName  WHERE
+	//IdName=@ParameterIdName
+	response.send("ok");
+	});
+});

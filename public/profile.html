@@ -5,6 +5,7 @@
 		<!-- Check Device Width so Media Queries will work -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="css/Style.css">
+		<script type="text/javascript" src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
 	</head>
 	<body>
 		<header>
@@ -14,20 +15,20 @@
 			</div>
 
 			<ul>
-				<li onclick="accessAccount('homePage.html?profile=',false);">hub</li>
-				<li onclick="accessAccount('friend.html?profile=',false);">friend</li>
+				<li id="liPageHome">hub</li>
+				<li id="liPageFriend">friend</li>
 			</ul>	
 		</header>
 		<div style="height:20px;"></div>
 		<content id="content">
 			<h2 id="titleName">Name</h2>
-			<img src="img/logo.png"></img>
+			<img id="profilepic"></img>
 			<p>link to your profile picture</p>
-			<input type="text"></input>
-			<button onclick="chgProfile(0,urlImg.value);chgImg();">change picture</button>
+			<input id="srcUrl" type="text"></input>
+			<button id="chgimg">change picture</button>
 			<p>bio</p>
-			<textarea></textarea>
-			<button onclick="chgBio();">change bio</button>
+			<textarea id="bioContent"></textarea>
+			<button id="chgbio">change bio</button>
 			<h3>Select your tag</h3>
 			<div id="tagBox">
 				<p>love</p>
@@ -59,13 +60,12 @@
 				<p>weirdo</p>
 				<input type="checkbox"></input>
 			</div>
-			<button onclick="updateTag();">update tag</button>
+			<button onclick="alert('this option is not available');">update tag</button>
 		</content>
 		<footer>
 			<p>Mathieu Auclair | MeetMe &reg </p>
 		</footer>
 
-		<script src="/script/url.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/script/profile.js"></script>
 	</body>

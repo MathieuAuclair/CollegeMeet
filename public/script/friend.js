@@ -83,3 +83,19 @@ $("#sendMsg").click(function(){
 	
 	socket.emit("sendNotification", {"from":currentUserInfo.EMAIL, "to":currentTalk});
 });
+
+$("#liPageHome").click(function(){
+	$.post("http://localhost:8080/createLiveSession", currentUserInfo, function(data){
+		window.location.href = "http://localhost:8080/homePage.html?id="+data;
+	});
+});
+
+$("#liPageProfile").click(function(){
+	$.post("http://localhost:8080/createLiveSession", currentUserInfo, function(data){
+		window.location.href = "http://localhost:8080/profile.html?id="+data;
+	});
+});
+
+
+
+
