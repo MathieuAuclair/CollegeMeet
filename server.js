@@ -119,6 +119,56 @@ app.post('/signin', function(request, response){
 //	}
 //}
 
+app.post('/getFriendList', function(request, response){
+	connection.query("SELECT ID_FRIEND FROM FRIEND WHERE ID_MEMBER = '" + request.body.EMAIL + "';",function(err, result){
+		if(err){
+		throw err;
+		}
+		else{
+		response.send(result);
+		}
+	});
+});
+
+app.post('/getConvo', function(request, response){
+	var user = JSON.parse(request.body.user);
+	connection.query("SELECT CONTENT, SENDER FROM MESSAGE WHERE "+
+			 "("+
+			 "ID_FRIEND = '" + user.EMAIL + "' "+
+			 "OR "+
+			 "ID_MEMBER = '" + user.EMAIL + "' "+
+			 ") "+
+			 "AND "+
+			 "("+
+			 "ID_FRIEND = '" + request.body.email + "' "+
+			 "OR "+
+			 "ID_MEMBER = '" + request.body.email + "' "+
+			 ") "+
+			 "AND "+
+			 "ID_MEMBER IN "+
+			 "("+
+			 "SELECT EMAIL FROM MEMBER WHERE EMAIL = '" + user.EMAIL + "' "+
+			 "AND "+
+			 "PASSWORD = '" + user.PASSWORD + "'"+
+			 ") "+
+			 "OR "+
+			 "ID_MEMBER IN "+
+			 "("+
+			 "SELECT EMAIL FROM MEMBER WHERE EMAIL = '" + user.EMAIL + "' "+
+			 "AND "+
+			 "PASSWORD = '" + user.PASSWORD + "'"+
+			 ")",
+	function(err, resultMsg){
+		if(err){
+		throw err;
+		}
+		else{
+		response.send(resultMsg);		 
+		}
+	});
+});
+
+
 app.post('/login', function(request, response){
 	connection.query("SELECT * FROM MEMBER WHERE EMAIL = '"+request.body.email + 
 			 "' AND PASSWORD = '" + request.body.password + "'", function(err, result){
@@ -167,7 +217,7 @@ this.email = userEmail;
 }
 
 app.post('/getLiveSession', function(request, response){
-	var userSession;
+	var userSession = "";
 	for(i=0; i<online.length; i++){
 		if(online[i].sessionID == request.body.id){
 			userSession = online[i].email; //get current session user

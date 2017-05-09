@@ -12,7 +12,6 @@ var currentSelectedMatch;
 var currentUserInfo;
 
 $(document).ready(function(){
-	var currentSession = getJsonFromUrl();
 	var selection = document.getElementById("selection");
 	$.post("http://localhost:8080/getLiveSession", {"id":getJsonFromUrl().id}, function(data){
 		if(data == ""){
@@ -99,4 +98,17 @@ $("#addFriend").click(function(){
 			}
 		});
 	}
+});
+
+
+$("#liPageFriend").click(function(){
+	$.post("http://localhost:8080/createLiveSession", currentUserInfo, function(data){
+		window.location.href = "http://localhost:8080/friend.html?id="+data;
+	});
+});
+
+$("#liPageProfile").click(function(){
+	$.post("http://localhost:8080/createLiveSession", currentUserInfo, function(data){
+		window.location.href = "http://localhost:8080/profile.html?id="+data;
+	});
 });
