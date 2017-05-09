@@ -1,6 +1,12 @@
 # MeetMe
 a meeting website for  a school project @CJTarik
 
+# TODO
+## REFACTORING, REFACTORING,
+### REFACTORING,
+#### REFACTORING,
+##### REFACTORING!
+
 ### Dependencies (to install)
 * nodeJS
 * npm (nodePersonalManager)
